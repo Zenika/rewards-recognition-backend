@@ -1,0 +1,12 @@
+[
+    {
+        "user_id" : 1,
+        "givable_points" : 100,
+        "redeemable_points" : 100
+    },
+    {
+        "user_id" : 2,
+        "givable_points" : 100,
+        "redeemable_points" : 100
+    }
+]
