@@ -15,14 +15,13 @@ type Database struct {
 }
 
 func (d *Database) Initialize() {
-	//cfg, err := config.GetConfig()
 	cfg, err := config.GetConfig()
-
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 		return
 	}
 
+	mongoDbContext := context.Background()
 	dbURI := fmt.Sprintf("%s://%s:%s@%s/?retryWrites=true&w=majority",
 		cfg.DB.Protocol,
 		cfg.DB.Username,
@@ -30,9 +29,13 @@ func (d *Database) Initialize() {
 		cfg.DB.Host)
 
 	clientOptions := options.Client().ApplyURI(dbURI)
-	client, err := mongo.Connect(context.Background(), clientOptions)
-
+	client, err := mongo.Connect(mongoDbContext, clientOptions)
 	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	if err := client.Ping(mongoDbContext, nil); err != nil {
 		log.Fatal(err)
 		return
 	}

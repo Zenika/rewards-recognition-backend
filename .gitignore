@@ -38,3 +38,6 @@ main/__debug_bin*
 
 # project binary 
 rewards-and-recognition
+
+# Rest http client files
+*.http
