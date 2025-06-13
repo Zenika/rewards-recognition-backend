@@ -40,15 +40,14 @@ func (r *Recognition) GetRecognitions(c *gin.Context, DB *mongo.Database) {
 	c.Header("Content-Type", "application/json")
 	// Get all recognitions from the database
 	collection := DB.Collection("recognitions")
-	filter := bson.M{"deleted": false}
-	cursor, err := collection.Find(c.Request.Context(), filter)
-	//cursor, err := collection.Find(c.Request.Context(), bson.D{})
+	cursor, err := collection.Find(c.Request.Context(), bson.D{})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	defer cursor.Close(c.Request.Context())
-	var recognitions []Recognition
+
+	recognitions := []Recognition{}
 	if err := cursor.All(c.Request.Context(), &recognitions); err != nil {
 		log.Printf("Error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
